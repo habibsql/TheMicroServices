@@ -7,7 +7,7 @@
     /// <summary>
     /// Product Purchase Entity
     /// </summary>
-    public class Purchase : Entity, IAggregateRoot
+    public class Purchase : Aggregate
     {
         public string PurchaaseId { get; set; }
 

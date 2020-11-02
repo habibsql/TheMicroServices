@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public class Store : Entity, IAggregateRoot
+    public class Store : Aggregate
     {
         public string Manager { get; set; }
     }

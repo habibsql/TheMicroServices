@@ -2,7 +2,7 @@
 {
     using Common.Core;
 
-    public class User : Entity, IAggregateRoot
+    public class User : Aggregate
     {
         public string Name { get; set; }
     }

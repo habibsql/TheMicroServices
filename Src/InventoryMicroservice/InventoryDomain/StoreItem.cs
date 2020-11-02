@@ -3,7 +3,7 @@
     using Common.Core;
     using System;
 
-    public class StoreItem : Entity, IAggregateRoot
+    public class StoreItem : Aggregate
     {
         public string ItemName { get; set; }
 

@@ -5,7 +5,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public interface IRepository<T> where T: IAggregateRoot
+    public interface IRepository<T> where T: IAggregate
     {
         Task<T> Save(T entity);
 
