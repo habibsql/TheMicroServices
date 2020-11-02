@@ -7,7 +7,7 @@
     using System;
     using System.Threading.Tasks;
 
-    public class CreateStoreCommandHandler : ICommandHandler<CreateStoreCommand, CommandResponse>
+    public class CreateStoreCommandHandler : ICommandHandler<CreateStoreCommand, CommandResult>
     {
         private readonly IStoreRepository storeRepository;
 
@@ -16,9 +16,9 @@
             this.storeRepository = storeRepository;
         }
 
-        public async Task<CommandResponse> Handle(CreateStoreCommand command)
+        public async Task<CommandResult> Handle(CreateStoreCommand command)
         {
-            CommandResponse commandResponse = ValidateCommand(command);
+            CommandResult commandResponse = ValidateCommand(command);
             if (!commandResponse.Succeed)
             {
                 return commandResponse;
@@ -29,9 +29,9 @@
             return commandResponse;
         }
 
-        private CommandResponse ValidateCommand(CreateStoreCommand command)
+        private CommandResult ValidateCommand(CreateStoreCommand command)
         {
-            var commandResponse = new CommandResponse();
+            var commandResponse = new CommandResult();
 
             if (string.IsNullOrEmpty(command.ManagerName))
             {

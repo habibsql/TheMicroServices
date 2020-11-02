@@ -46,8 +46,8 @@ namespace PurchaseWebApi
         private void RegisterServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<ICommandBus, CommandBus>();
-            serviceCollection.AddSingleton<IServiceBus, IServiceBus>();
-            serviceCollection.AddSingleton<ICommandHandler<PurchaseCommand, CommandResponse>, PurchaseCommandHandler>();
+            serviceCollection.AddSingleton<IEventBus, IEventBus>();
+            serviceCollection.AddSingleton<ICommandHandler<PurchaseCommand, CommandResult>, PurchaseCommandHandler>();
             serviceCollection.AddSingleton<IMongoDbService>(item =>
             {
                 string connectionString = configRoot.GetConnectionString("mongodb");

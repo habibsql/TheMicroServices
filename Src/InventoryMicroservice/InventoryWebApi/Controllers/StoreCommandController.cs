@@ -22,7 +22,7 @@
 
         [HttpPost]
         [Route("[action]")]
-        public Task<CommandResponse> CreateStore(StoreDTO store)
+        public Task<CommandResult> CreateStore(StoreDTO store)
         {
             var command = new CreateStoreCommand
             {
@@ -30,7 +30,7 @@
                 ManagerName = store.ManagerName
             };
 
-            var commandHandler = serviceProvider.GetService<ICommandHandler<CreateStoreCommand, CommandResponse>>();
+            var commandHandler = serviceProvider.GetService<ICommandHandler<CreateStoreCommand, CommandResult>>();
 
            return commandHandler.Handle(command);
         }

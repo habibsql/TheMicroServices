@@ -15,7 +15,7 @@ namespace Common.Infrastructure.Tests
     public class RabbitMqServiceBusTest
     {
         private readonly MessageBrokerSettings rabbitMqSettings;
-        private readonly RabbitMqServiceBus rabbitMqServiceBus;
+        private readonly DefaultEventBus rabbitMqServiceBus;
         private const string QueueName = "product-purchased";
 
         public RabbitMqServiceBusTest()
@@ -34,7 +34,7 @@ namespace Common.Infrastructure.Tests
             serviceProvider.Setup(item => item.GetService(typeof(IEventHandler<ProductPurchasedEvent>)))
              .Returns(new PurchaseEventHandler());
 
-            rabbitMqServiceBus = new RabbitMqServiceBus(serviceProvider.Object);
+            rabbitMqServiceBus = new DefaultEventBus(serviceProvider.Object);
         }
 
         [Fact]

@@ -11,22 +11,22 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class PurchaseCommandHandler : ICommandHandler<PurchaseCommand, CommandResponse>
+    public class PurchaseCommandHandler : ICommandHandler<PurchaseCommand, CommandResult>
     {
         private readonly IPurchaseRepostiory purchaseRepository;
-        private readonly IServiceBus serviceBus;
+        private readonly IEventBus serviceBus;
         private readonly IEmailService emailService;
 
-        public PurchaseCommandHandler(IPurchaseRepostiory purchaseRepository, IServiceBus serviceBus, IEmailService emailService)
+        public PurchaseCommandHandler(IPurchaseRepostiory purchaseRepository, IEventBus serviceBus, IEmailService emailService)
         {
             this.purchaseRepository = purchaseRepository;
             this.serviceBus = serviceBus;
             this.emailService = emailService;
         }
 
-        public async Task<CommandResponse> Handle(PurchaseCommand purchaseCommand)
+        public async Task<CommandResult> Handle(PurchaseCommand purchaseCommand)
         {
-            CommandResponse commandResponse = ValidateCommand(purchaseCommand);
+            CommandResult commandResponse = ValidateCommand(purchaseCommand);
             if (!commandResponse.Succeed)
             {
                 return commandResponse;
@@ -41,12 +41,12 @@
             EmailParams emailParams = BuildEmailParameters(productPurchasedEvent);
             await emailService.SendEmail(emailParams);
 
-            return new CommandResponse();
+            return new CommandResult();
         }
 
-        private CommandResponse ValidateCommand(PurchaseCommand productPurchaseCommand)
+        private CommandResult ValidateCommand(PurchaseCommand productPurchaseCommand)
         {
-            var commandResponse = new CommandResponse();
+            var commandResponse = new CommandResult();
 
             if (null == productPurchaseCommand)
             {

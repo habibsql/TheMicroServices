@@ -61,9 +61,9 @@ namespace InventoryWebApi
             };
             services.AddSingleton(rabbitMqSettings);
 
-            services.AddSingleton<IServiceBus, RabbitMqServiceBus>();
+            services.AddSingleton<IEventBus, DefaultEventBus>();
 
-            services.AddSingleton<ICommandHandler<CreateStoreCommand, CommandResponse>, CreateStoreCommandHandler>();
+            services.AddSingleton<ICommandHandler<CreateStoreCommand, CommandResult>, CreateStoreCommandHandler>();
 
             services.AddSingleton<IEventHandler<ProductPurchasedEvent>, ProductPurchasedEventHandler>();
 

@@ -1,21 +1,22 @@
 ﻿namespace Common.Infrastructure
 {
     using Common.Core;
+    using Common.Core.Events;
+    using Microsoft.Extensions.DependencyInjection;
     using RabbitMQ.Client;
     using RabbitMQ.Client.Events;
     using System;
-    using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Linq;
-    using Microsoft.Extensions.DependencyInjection;
-    using Common.Core.Events;
 
-    public class RabbitMqServiceBus : IServiceBus
+    /// <summary>
+    /// RabbitMQ implementaiton
+    /// </summary>
+    public class DefaultEventBus : IEventBus
     {
         private readonly IServiceProvider serviceProvider;
 
-        public RabbitMqServiceBus(IServiceProvider serviceProvider)
+        public DefaultEventBus(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
         }

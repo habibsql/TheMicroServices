@@ -20,7 +20,7 @@
 
         [HttpPost]
         [Route("purchases/do")]
-        public Task<CommandResponse> DoPurchase(PurchaseDTO purchaseDTO)
+        public Task<CommandResult> DoPurchase(PurchaseDTO purchaseDTO)
         {
             var command = new PurchaseCommand
             {                
@@ -39,7 +39,7 @@
                 });
             }
 
-            return commandBus.Route<PurchaseCommand, CommandResponse>(command);
+            return commandBus.Route<PurchaseCommand, CommandResult>(command);
         }
     }
 }

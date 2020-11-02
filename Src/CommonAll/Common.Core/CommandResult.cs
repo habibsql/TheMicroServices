@@ -2,15 +2,15 @@
 {
     using System;
 
-    public class CommandResponse
+    public class CommandResult
     {
         public string ErrorData { get; set; }
 
-        public CommandResponse()
+        public CommandResult()
         {
         }
 
-        public CommandResponse(string errorData)
+        public CommandResult(string errorData)
         {
             this.ErrorData = errorData;
         }
