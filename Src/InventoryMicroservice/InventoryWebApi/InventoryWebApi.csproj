@@ -4,4 +4,18 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonAll\Common.Core\Common.Core.csproj" />
+    <ProjectReference Include="..\..\CommonAll\Common.Infrastructure\Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\Inventory.EventHandler\Inventory.EventHandler\Inventory.EventHandler.csproj" />
+    <ProjectReference Include="..\InventoryCommandHandler\Inventory.CommandHandler.csproj" />
+    <ProjectReference Include="..\InventoryCommand\Inventory.Command.csproj" />
+    <ProjectReference Include="..\InventoryDto\Inventory.DTO.csproj" />
+    <ProjectReference Include="..\InventoryRepository\Inventory.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
 </Project>

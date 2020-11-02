@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonAll\Common.Core.csproj" />
+    <ProjectReference Include="..\..\CommonAll\Common.Core\Common.Core.csproj" />
+    <ProjectReference Include="..\PurchaseCore\Purchase.Core.csproj" />
+    <ProjectReference Include="..\PurchaseDomain\Purchase.Domain.csproj" />
+  </ItemGroup>
+  
+</Project>

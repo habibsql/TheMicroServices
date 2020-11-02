@@ -1,24 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 namespace PurchaseWebApi
 {
+    using Common.Core;
+    using Common.Infrastructure;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Purchase.Command;
+    using Purchase.CommandHandler;
+
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        private readonly IConfiguration configRoot;
+
+        public Startup(IConfiguration configRoot)
         {
+            this.configRoot = configRoot;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
+            services.AddControllers();
+            RegisterServices(services);
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -30,11 +37,35 @@ namespace PurchaseWebApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller}/{action}/{id?}");
             });
+        }
+
+        private void RegisterServices(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton<ICommandBus, CommandBus>();
+            serviceCollection.AddSingleton<IServiceBus, IServiceBus>();
+            serviceCollection.AddSingleton<ICommandHandler<PurchaseCommand, CommandResponse>, PurchaseCommandHandler>();
+            serviceCollection.AddSingleton<IMongoDbService>(item =>
+            {
+                string connectionString = configRoot.GetConnectionString("mongodb");
+                return new MongoDbService(connectionString);
+            });
+            serviceCollection.AddSingleton<ISerializer, JsonSerializer>();
+            serviceCollection.AddSingleton<IEmailService>(item =>
+           {
+               IConfigurationSection emailSettings = configRoot.GetSection("EmailSettings");
+               var settings = new EmailSettings
+               {
+                   Host = emailSettings["Host"],
+                   Port = int.Parse(emailSettings["Port"]),
+                   UserId = emailSettings["UserId"],
+                   Password = emailSettings["Password"]
+               };
+               return new EmailService(settings);
+           });
         }
     }
 }
