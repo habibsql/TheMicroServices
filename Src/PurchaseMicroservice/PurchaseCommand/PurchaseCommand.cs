@@ -6,6 +6,8 @@
 
     public class PurchaseCommand : ICommand
     {
+        public string PurchaseId { get; set; }
+
         public DateTime PurchaseDate { get; set; }
 
         public string UserId { get; set; }

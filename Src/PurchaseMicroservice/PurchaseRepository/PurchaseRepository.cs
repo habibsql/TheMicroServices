@@ -1,8 +1,9 @@
-﻿namespace PurchaseRepository
+﻿namespace Purchase.Repository
 {
     using Common.Core;
     using MongoDB.Driver;
     using Purchase.Domain.Model;
+    using Purchase.DTO;
     using Purchase.Repository;
     using System;
     using System.Collections.Generic;
@@ -11,9 +12,9 @@
 
     public class PurchaseRepository : IPurchaseRepostiory
     {
-        private readonly IMongoDbService mongoDbService;
+        private readonly IMongoService mongoDbService;
 
-        public PurchaseRepository(IMongoDbService mongoDbService)
+        public PurchaseRepository(IMongoService mongoDbService)
         {
             this.mongoDbService = mongoDbService;
         }
@@ -36,7 +37,7 @@
             return purchase;
         }
 
-        public Task<IEnumerable<Purchase>> FindPurchases(DateTime from, DateTime to, int pageNumber, int pageSize, string sortField, int sortDirection)
+        public Task<IEnumerable<ProductPurchasedDTO>> SearchPurchases(DateTime from, DateTime to, int pageNumber, int pageSize, string sortField, int sortDirection)
         {
             IMongoCollection<Purchase> purchaseCollection = mongoDbService.GetCollection<Purchase>();
 
@@ -44,18 +45,36 @@
 
             IQueryable<Purchase> query = purchaseCollection.AsQueryable().Where(item => item.PurchaseDate >= from && item.PurchaseDate <= to);
 
-            if (sortDirection == 0)
+            var orderBy = sortDirection == 0 ? query.OrderBy(item => sortField) : query.OrderByDescending(item => sortField);
+           
+            IEnumerable <Purchase> purchases = query.Skip(skip).Take(pageSize);
+
+            IEnumerable<ProductPurchasedDTO> productPurchasedDtoList = Map(purchases);
+
+            return Task.FromResult(productPurchasedDtoList);
+        }
+
+        private IEnumerable<ProductPurchasedDTO> Map(IEnumerable<Purchase> purchases)
+        {
+            var dtoList = new List<ProductPurchasedDTO>();
+
+            foreach (Purchase purchase in purchases)
             {
-                query.OrderBy(item => sortField);
-            }
-            else if (sortDirection == 1)
-            {
-                query.OrderByDescending(item => sortField);
+                foreach (ProductLineItem productLineItem in purchase.LineItems)
+                {
+                    var productPurchasedDTO = new ProductPurchasedDTO
+                    {
+                        Date = purchase.PurchaseDate,
+                        ProductName = productLineItem.Product.ProductName,
+                        PurchasedQuantity = productLineItem.Quantity,
+                        PurchasedAmount = productLineItem.TotalPrice
+                    };
+
+                    dtoList.Add(productPurchasedDTO);
+                }
             }
 
-            IEnumerable<Purchase> purchases = query.Skip(skip).Take(pageSize);
-
-            return Task.FromResult(purchases);
+            return dtoList;
         }
     }
 }

@@ -3,33 +3,53 @@ namespace Inventory.Repository
 {
     using Common.Core;
     using Inventory.Domain;
-    using System;
+    using MongoDB.Driver;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public class StoreItemRepository : IStoreItemRepository
     {
-        private readonly IMongoDbService mongoDbService;
+        private readonly IMongoService mongoService;
 
-        public StoreItemRepository(IMongoDbService mongoDbService)
+        public StoreItemRepository(IMongoService mongoDbService)
         {
-            this.mongoDbService = mongoDbService;
+            this.mongoService = mongoDbService;
         }
 
-        public Task<StoreItem> GetById(string id)
+        public async Task<StoreItem> GetById(string id)
         {
-            throw new NotImplementedException();
+            IMongoCollection<StoreItem> storeItemCollection = mongoService.GetCollection<StoreItem>();
+
+            IAsyncCursor<StoreItem> itemCursor = await storeItemCollection.FindAsync(item => item.Id.Equals(id));
+
+            return await itemCursor.FirstOrDefaultAsync();
         }
 
-        public Task<StoreItem> Save(StoreItem entity)
+        public async Task RemoveItems(IEnumerable<string> ids)
         {
-            return Task.FromResult(entity);
+            IMongoCollection<StoreItem> storeItemCollection = mongoService.GetCollection<StoreItem>();
+
+            foreach (string id in ids)
+            {
+                await storeItemCollection.DeleteOneAsync(item => item.Id.Equals(id));
+            }
         }
 
-        public Task SaveItems(IEnumerable<StoreItem> entities)
+        public async Task<StoreItem> Save(StoreItem entity)
         {
-            throw new NotImplementedException();
+            IMongoCollection<StoreItem> storeItemCollection = mongoService.GetCollection<StoreItem>();
+
+            await storeItemCollection.InsertOneAsync(entity);
+
+            return entity;
         }
 
+        public async Task SaveItems(IEnumerable<StoreItem> entities)
+        {
+            foreach(StoreItem item in entities)
+            {
+                await Save(item);
+            }
+        }
     }
 }

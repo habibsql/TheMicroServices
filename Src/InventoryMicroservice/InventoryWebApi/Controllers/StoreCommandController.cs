@@ -1,23 +1,21 @@
-﻿namespace InventoryWebApi.Controllers
+﻿namespace Inventory.Api.Controllers
 {
     using Common.Core;
     using Inventory.Command;
     using Inventory.DTO;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.DependencyInjection;
     using System;
     using System.Threading.Tasks;
-    using Inventory.Repository;
 
     [Route("api/[controller]")]
     [ApiController]
     public class StoreCommandController : ControllerBase
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly ICommandBus commandBus;
 
-        public StoreCommandController(IServiceProvider serviceProvider)
+        public StoreCommandController(ICommandBus commandBus)
         {
-            this.serviceProvider = serviceProvider;
+            this.commandBus = commandBus;
         }
 
         [HttpPost]
@@ -30,9 +28,7 @@
                 ManagerName = store.ManagerName
             };
 
-            var commandHandler = serviceProvider.GetService<ICommandHandler<CreateStoreCommand, CommandResult>>();
-
-           return commandHandler.Handle(command);
+            return commandBus.Send<CreateStoreCommand, CommandResult>(command);
         }
     }
 }

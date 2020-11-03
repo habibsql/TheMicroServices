@@ -1,21 +1,35 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 namespace SalesWebApi
 {
+    using Common.Core;
+    using Common.Core.Events;
+    using Common.Infrastructure;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Sales.Command;
+    using Sales.CommandHandler;
+    using Sales.Query;
+    using Sales.QueryHandler;
+    using Sales.Repository;
+
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        private readonly IConfiguration configRoot;
+
+        public Startup(IConfiguration configRoot)
+        {
+            this.configRoot = configRoot;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+            services.AddControllers();
+
+            RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,11 +44,57 @@ namespace SalesWebApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapDefaultControllerRoute();
             });
+        }
+
+        private void RegisterServices(IServiceCollection services)
+        {
+            RegisterHelperServices(services);
+            RegisterBuses(services);
+            RegisterCommandHandlers(services);
+            RegisterEventHandlers(services);
+            RegisterQueryHandlers(services);
+            RegisterRepositories(services);
+        }
+
+        private void RegisterHelperServices(IServiceCollection services)
+        {
+            var rabbitMqSettings = new MessageBrokerSettings
+            {
+                Host = "127.0.0.1",
+                Port = 5672,
+                UserId = "guest",
+                Password = "guest"
+            };
+            services.AddSingleton(rabbitMqSettings);
+            services.AddSingleton<IMongoService>(new MongoService(configRoot.GetConnectionString("Default")));
+        }
+
+        private void RegisterBuses(IServiceCollection services)
+        {
+            services.AddSingleton<ICommandBus, CommandBus>();
+            services.AddSingleton<IEventBus, EventBus>();
+            services.AddSingleton<IQueryBus, QueryBus>();
+        }
+
+        private void RegisterCommandHandlers(IServiceCollection services)
+        {
+            services.AddSingleton<ICommandHandler<SalesCommand, CommandResult>, SalesCommandHandler>();
+        }
+
+        private void RegisterEventHandlers(IServiceCollection services)
+        {
+        }
+
+        private void RegisterQueryHandlers(IServiceCollection services)
+        {
+            services.AddSingleton<IQueryHandler<SalesQuery, QueryResult>, SalesQueryHandler>();
+        }
+
+        private void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddSingleton<ISalesRepository, SalesRepository>();
         }
     }
 }

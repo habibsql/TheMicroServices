@@ -9,6 +9,7 @@
     <ProjectReference Include="..\..\CommonAll\Common.Core\Common.Core.csproj" />
     <ProjectReference Include="..\PurchaseCore\Purchase.Core.csproj" />
     <ProjectReference Include="..\PurchaseDomain\Purchase.Domain.csproj" />
+    <ProjectReference Include="..\PurchaseDto\Purchase.DTO.csproj" />
   </ItemGroup>
   
 </Project>

@@ -15,7 +15,7 @@ namespace Common.Infrastructure.Tests
     public class RabbitMqServiceBusTest
     {
         private readonly MessageBrokerSettings rabbitMqSettings;
-        private readonly DefaultEventBus rabbitMqServiceBus;
+        private readonly EventBus rabbitMqServiceBus;
         private const string QueueName = "product-purchased";
 
         public RabbitMqServiceBusTest()
@@ -34,16 +34,16 @@ namespace Common.Infrastructure.Tests
             serviceProvider.Setup(item => item.GetService(typeof(IEventHandler<ProductPurchasedEvent>)))
              .Returns(new PurchaseEventHandler());
 
-            rabbitMqServiceBus = new DefaultEventBus(serviceProvider.Object);
+            rabbitMqServiceBus = new EventBus(serviceProvider.Object);
         }
 
         [Fact]
         public async Task ShouldPublishMessageWhenValidQueueProvided()
         {
-            var lineItems = new List<LineItem>
+            var lineItems = new List<PurchasedLineItem>
             {
-                new LineItem{ProductId = Guid.NewGuid().ToString(), PricePerUnit = 100, Quantity = 100},
-                new LineItem{ProductId = Guid.NewGuid().ToString(), PricePerUnit = 200, Quantity = 200},
+                new PurchasedLineItem{ProductId = Guid.NewGuid().ToString(), PurchasedUnitPrice = 100, PurchasedQuantity = 100},
+                new PurchasedLineItem{ProductId = Guid.NewGuid().ToString(), PurchasedUnitPrice = 200, PurchasedQuantity = 200},
             };
 
             var productPurchasedEvent = new ProductPurchasedEvent
@@ -61,19 +61,6 @@ namespace Common.Infrastructure.Tests
             await rabbitMqServiceBus.Subscribe<ProductPurchasedEvent>(QueueName);
 
             await Task.Delay(1000 * 3);
-        }
-
-        private IConnection CreateRabbitMqConnection()
-        {
-            var connectionFactory = new ConnectionFactory
-            {
-                HostName = rabbitMqSettings.Host,
-                Port = rabbitMqSettings.Port,
-                UserName = rabbitMqSettings.UserId,
-                Password = rabbitMqSettings.Password
-            };
-
-            return connectionFactory.CreateConnection();
         }
     }
 

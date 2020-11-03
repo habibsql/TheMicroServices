@@ -33,7 +33,7 @@
         {
             var storeItems = new List<StoreItem>();
 
-            foreach (LineItem lineItem in @event.LineItems)
+            foreach (PurchasedLineItem lineItem in @event.LineItems)
             {
                 var storeItem = new StoreItem
                 {
@@ -41,7 +41,7 @@
                     PurchaseId = @event.PurchaseId,
                     ItemName = lineItem.ProductName,
                     Store = store,
-                    Quantity = lineItem.Quantity
+                    Quantity = lineItem.PurchasedQuantity
                 };
                 storeItems.Add(storeItem);
             }

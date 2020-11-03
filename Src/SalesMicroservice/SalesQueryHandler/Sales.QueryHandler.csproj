@@ -4,4 +4,12 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonAll\Common.Core\Common.Core.csproj" />
+    <ProjectReference Include="..\..\CommonAll\Common.Infrastructure\Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\SalesDto\Sales.DTO.csproj" />
+    <ProjectReference Include="..\SalesQuery\Sales.Query.csproj" />
+    <ProjectReference Include="..\SalesRepository\Sales.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -5,8 +5,6 @@
 
     public class PurchaseDTO
     {
-        public string PurchaseId { get; set; }
-
         public DateTime PurchaseDate { get; set; }
 
         public int TotalPrice { get; set; }

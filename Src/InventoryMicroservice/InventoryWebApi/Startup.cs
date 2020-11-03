@@ -1,4 +1,4 @@
-namespace InventoryWebApi
+namespace Inventory.Api
 {
     using Common.Core;
     using Common.Core.Events;
@@ -6,6 +6,8 @@ namespace InventoryWebApi
     using Inventory.Command;
     using Inventory.CommandHandler;
     using Inventory.EventHandler;
+    using Inventory.Query;
+    using Inventory.QueryHandler;
     using Inventory.Repository;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -17,7 +19,6 @@ namespace InventoryWebApi
     public class Startup
     {
         private readonly IConfiguration configRoot;
-
         public Startup(IConfiguration configRoot)
         {
             this.configRoot = configRoot;
@@ -52,6 +53,16 @@ namespace InventoryWebApi
 
         private void RegisterServices(IServiceCollection services)
         {
+            RegisterHelperServices(services);
+            RegisterBuses(services);
+            RegisterCommandHanders(services);
+            RegisterQueryHandlers(services);
+            RegisterEventHandlers(services);
+            RegisterRepositories(services);
+        }
+
+        private void RegisterHelperServices(IServiceCollection services)
+        {
             var rabbitMqSettings = new MessageBrokerSettings
             {
                 Host = "127.0.0.1",
@@ -60,17 +71,37 @@ namespace InventoryWebApi
                 Password = "guest"
             };
             services.AddSingleton(rabbitMqSettings);
+            services.AddSingleton<IMongoService>(new MongoService(configRoot.GetConnectionString("Default")));
+        }
 
-            services.AddSingleton<IEventBus, DefaultEventBus>();
+        private void RegisterBuses(IServiceCollection services)
+        {
+            services.AddSingleton<ICommandBus, CommandBus>();
+            services.AddSingleton<IEventBus, EventBus>();
+            services.AddSingleton<IQueryBus, QueryBus>();
+        }
 
+        private void RegisterCommandHanders(IServiceCollection services)
+        {
             services.AddSingleton<ICommandHandler<CreateStoreCommand, CommandResult>, CreateStoreCommandHandler>();
+        }
 
+        private void RegisterQueryHandlers(IServiceCollection services)
+        {
+            services.AddSingleton<IQueryHandler<StoreQuery, QueryResult>, StoreQueryHandler>();
+        }
+
+        private void RegisterEventHandlers(IServiceCollection services)
+        {
             services.AddSingleton<IEventHandler<ProductPurchasedEvent>, ProductPurchasedEventHandler>();
+            services.AddSingleton<IEventHandler<ProductSoldEvent>, ProductSoldEventHandler>();
+        }
 
+        private void RegisterRepositories(IServiceCollection services)
+        {
             services.AddSingleton<IStoreRepository, StoreRepository>();
             services.AddSingleton<IStoreItemRepository, StoreItemRepository>();
-
-            services.AddSingleton<IMongoDbService>(new MongoDbService(configRoot.GetConnectionString("Default")));
         }
+
     }
 }

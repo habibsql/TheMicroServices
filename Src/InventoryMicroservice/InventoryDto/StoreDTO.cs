@@ -7,5 +7,7 @@
         public string StoreId { get; set; }
 
         public string ManagerName { get; set; }
+
+        public DateTime CreatedDate { get; set; }
     }
 }

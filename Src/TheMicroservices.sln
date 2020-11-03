@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PurchaseMicroservice", "PurchaseMicroservice", "{66EE5B92-EBBC-4F0A-A67F-232B0F1FA5C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Purchase.WebApi", "PurchaseMicroservice\PurchaseWebApi\Purchase.WebApi.csproj", "{4A96FD48-1F32-4787-8914-CE61765E2D7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Purchase.Api", "PurchaseMicroservice\PurchaseWebApi\Purchase.Api.csproj", "{4A96FD48-1F32-4787-8914-CE61765E2D7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Purchase.Command", "PurchaseMicroservice\PurchaseCommand\Purchase.Command.csproj", "{AB5DD339-5F31-4B97-B883-8D87119A4D9C}"
 EndProject
@@ -23,13 +23,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SalesMicroservice", "SalesM
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InventoryMicroservice", "InventoryMicroservice", "{A520C293-BEE3-463F-A448-488C5EC15D24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryWebApi", "InventoryMicroservice\InventoryWebApi\InventoryWebApi.csproj", "{039921D8-4248-4929-9600-F6794AEB46E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Api", "InventoryMicroservice\InventoryWebApi\Inventory.Api.csproj", "{039921D8-4248-4929-9600-F6794AEB46E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Command", "InventoryMicroservice\InventoryCommand\Inventory.Command.csproj", "{2242FC5A-384D-4644-85C0-8D8AA1D7D2DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.CommandHandler", "InventoryMicroservice\InventoryCommandHandler\Inventory.CommandHandler.csproj", "{DCE0ABDE-C706-4357-B2C2-508E5E5E4028}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryQuery", "InventoryMicroservice\InventoryQuery\InventoryQuery.csproj", "{F6BCF270-F199-4DD7-A1C3-D4132FDBDC03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Query", "InventoryMicroservice\InventoryQuery\Inventory.Query.csproj", "{F6BCF270-F199-4DD7-A1C3-D4132FDBDC03}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryQueryHandler", "InventoryMicroservice\InventoryQueryHandler\InventoryQueryHandler.csproj", "{495F1E24-3A2E-44D1-BE21-07ABAD784B22}"
 EndProject
@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Repository", "Inv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.DTO", "InventoryMicroservice\InventoryDto\Inventory.DTO.csproj", "{2B8CA8C4-B09F-4161-9687-14CCC589D1F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesWebApi", "SalesMicroservice\SalesWebApi\SalesWebApi.csproj", "{39EA2A18-2DD0-4C9D-988F-E61EF77ADF1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sales.Api", "SalesMicroservice\SalesWebApi\Sales.Api.csproj", "{39EA2A18-2DD0-4C9D-988F-E61EF77ADF1A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sales.Core", "SalesMicroservice\SalesCore\Sales.Core.csproj", "{59677058-994E-487E-B294-EE9C71DA96D2}"
 EndProject
@@ -67,11 +67,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Core", "CommonAll\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.EventHandler", "InventoryMicroservice\Inventory.EventHandler\Inventory.EventHandler\Inventory.EventHandler.csproj", "{5028999F-F0EC-4421-A786-606372EC0B01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Tests", "CommonAll\Common.Infrastructure.Tests\Common.Infrastructure.Tests.csproj", "{E17DA84E-69C1-4EB9-AC24-39A9605259EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Infrastructure.Tests", "CommonAll\Common.Infrastructure.Tests\Common.Infrastructure.Tests.csproj", "{E17DA84E-69C1-4EB9-AC24-39A9605259EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purchase.QueryHandler", "PurchaseMicroservice\Purchase.QueryHandler\Purchase.QueryHandler.csproj", "{0D327170-0673-4A43-8A29-07912377A898}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Purchase.QueryHandler", "PurchaseMicroservice\Purchase.QueryHandler\Purchase.QueryHandler.csproj", "{0D327170-0673-4A43-8A29-07912377A898}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Core.Tests", "CommonAll\Common.Core.Tests\Common.Core.Tests.csproj", "{DAE9ABA6-E347-4659-B579-D80A6AC2000E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Core.Tests", "CommonAll\Common.Core.Tests\Common.Core.Tests.csproj", "{DAE9ABA6-E347-4659-B579-D80A6AC2000E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.QueryHandler", "InventoryMicroservice\Inventory.QueryHandler\Inventory.QueryHandler.csproj", "{1E79EA40-B395-4D11-AA12-A9ED08D18983}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sales.Repository.Tests", "SalesMicroservice\Sales.Repository.Tests\Sales.Repository.Tests.csproj", "{5D8E595F-6C68-47DE-9D1A-538AA6720A02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +207,14 @@ Global
 		{DAE9ABA6-E347-4659-B579-D80A6AC2000E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAE9ABA6-E347-4659-B579-D80A6AC2000E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAE9ABA6-E347-4659-B579-D80A6AC2000E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E79EA40-B395-4D11-AA12-A9ED08D18983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E79EA40-B395-4D11-AA12-A9ED08D18983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E79EA40-B395-4D11-AA12-A9ED08D18983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E79EA40-B395-4D11-AA12-A9ED08D18983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D8E595F-6C68-47DE-9D1A-538AA6720A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D8E595F-6C68-47DE-9D1A-538AA6720A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D8E595F-6C68-47DE-9D1A-538AA6720A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D8E595F-6C68-47DE-9D1A-538AA6720A02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -239,6 +251,8 @@ Global
 		{E17DA84E-69C1-4EB9-AC24-39A9605259EE} = {7A660546-3B3E-44B8-BF65-422CDA59BED4}
 		{0D327170-0673-4A43-8A29-07912377A898} = {66EE5B92-EBBC-4F0A-A67F-232B0F1FA5C0}
 		{DAE9ABA6-E347-4659-B579-D80A6AC2000E} = {7A660546-3B3E-44B8-BF65-422CDA59BED4}
+		{1E79EA40-B395-4D11-AA12-A9ED08D18983} = {A520C293-BEE3-463F-A448-488C5EC15D24}
+		{5D8E595F-6C68-47DE-9D1A-538AA6720A02} = {B5EA3087-36A6-4F1B-B57D-B4A0439552AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A562724F-A53A-4048-8F82-F40597B34CE3}

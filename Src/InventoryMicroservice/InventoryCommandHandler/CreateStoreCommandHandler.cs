@@ -35,7 +35,7 @@
 
             if (string.IsNullOrEmpty(command.ManagerName))
             {
-                commandResponse.ErrorData = "Sorry! Manager name should not be empty.";
+                commandResponse.Error = "Sorry! Manager name should not be empty.";
             }
 
             return commandResponse;

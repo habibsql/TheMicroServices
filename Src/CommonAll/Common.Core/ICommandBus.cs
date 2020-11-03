@@ -4,6 +4,7 @@
 
     public interface ICommandBus
     {
-        Task<TResponse> Route<TCommand, TResponse>(TCommand command);
+        Task<TResult> Send<TCommand, TResult>(TCommand command) where TCommand : ICommand
+                                                                     where TResult : CommandResult;
     }
 }

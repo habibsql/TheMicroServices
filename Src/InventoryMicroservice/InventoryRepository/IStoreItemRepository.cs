@@ -10,5 +10,7 @@
     public interface IStoreItemRepository : IRepository<StoreItem>
     {
         public Task SaveItems(IEnumerable<StoreItem> entities);
+
+        public Task RemoveItems(IEnumerable<string> ids);
     }
 }

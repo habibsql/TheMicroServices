@@ -4,7 +4,7 @@
 
     public class CommandResult
     {
-        public string ErrorData { get; set; }
+        public string Error { get; set; }
 
         public CommandResult()
         {
@@ -12,12 +12,12 @@
 
         public CommandResult(string errorData)
         {
-            this.ErrorData = errorData;
+            this.Error = errorData;
         }
 
         public bool Succeed
         {
-            get { return String.IsNullOrEmpty(ErrorData); }
+            get { return String.IsNullOrEmpty(Error); }
         }
     }
 }

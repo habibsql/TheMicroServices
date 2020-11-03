@@ -9,24 +9,32 @@
 
         public DateTime PurchaseDate { get; set; }
 
-       public IList<LineItem> LineItems { get; set; }
+       public IList<PurchasedLineItem> LineItems { get; set; }
 
         public ProductPurchasedEvent()
         {
-            LineItems = new List<LineItem>();
+            LineItems = new List<PurchasedLineItem>();
         }
     }
 
-    public class LineItem
+    public class PurchasedLineItem
     {
         public string ProductId { get; set; }
 
         public string ProductName { get; set; }
 
-        public int Quantity { get; set; }
+        public int PurchasedQuantity { get; set; }
 
-        public int PricePerUnit { get; set; }
+        public string PurchasedUnitName { get; set; }
 
-        public int TotalPrice { get; set; }
+        public int PurchasedUnitPrice { get; set; }
+
+        public int PurchaedTotalPrice
+        {
+            get
+            {
+                return PurchasedUnitPrice * PurchasedQuantity;
+            }
+        }
     }
 }

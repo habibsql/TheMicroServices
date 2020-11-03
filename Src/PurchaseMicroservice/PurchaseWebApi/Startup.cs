@@ -1,4 +1,4 @@
-namespace PurchaseWebApi
+namespace Purchase.Api
 {
     using Common.Core;
     using Common.Infrastructure;
@@ -9,6 +9,10 @@ namespace PurchaseWebApi
     using Microsoft.Extensions.Hosting;
     using Purchase.Command;
     using Purchase.CommandHandler;
+    using Purchase.Query;
+    using Purchase.QueryHandler;
+    using Purchase.Repository;
+    using System;
 
     public class Startup
     {
@@ -45,27 +49,66 @@ namespace PurchaseWebApi
 
         private void RegisterServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<ICommandBus, CommandBus>();
-            serviceCollection.AddSingleton<IEventBus, IEventBus>();
-            serviceCollection.AddSingleton<ICommandHandler<PurchaseCommand, CommandResult>, PurchaseCommandHandler>();
-            serviceCollection.AddSingleton<IMongoDbService>(item =>
+            RegisterHelperServices(serviceCollection);
+            RegisterBuses(serviceCollection);
+            RegisterCommandHandlers(serviceCollection);
+            RegisterQueryHandlers(serviceCollection);
+            RegisterEventHanders(serviceCollection);
+            RegisterRepositories(serviceCollection);
+        }
+
+        private void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddSingleton<IPurchaseRepostiory, PurchaseRepository>();
+        }
+
+        private void RegisterCommandHandlers(IServiceCollection services)
+        {
+            services.AddSingleton<ICommandHandler<PurchaseCommand, CommandResult>, PurchaseCommandHandler>();
+            //services.AddHttpClient<ICommandHandler<PurchaseCommand, CommandResult>, PurchaseCommandHandler>();
+        }
+
+        private void RegisterQueryHandlers(IServiceCollection services)
+        {
+            services.AddSingleton<IQueryHandler<ProductPurchasedQuery, QueryResult>, ProductPurchaseQueryHandler>();
+        }
+
+        private void RegisterEventHanders(IServiceCollection services)
+        {
+
+        }
+
+        private void RegisterBuses(IServiceCollection services)
+        {
+            services.AddSingleton<ICommandBus, CommandBus>();
+            services.AddSingleton<IEventBus, EventBus>();
+            services.AddSingleton<IQueryBus, QueryBus>();
+        }
+
+        private void RegisterHelperServices(IServiceCollection services)
+        {
+            services.AddSingleton<IMongoService>(item =>
             {
-                string connectionString = configRoot.GetConnectionString("mongodb");
-                return new MongoDbService(connectionString);
+                string connectionString = configRoot.GetConnectionString("default");
+                return new MongoService(connectionString);
             });
-            serviceCollection.AddSingleton<ISerializer, JsonSerializer>();
-            serviceCollection.AddSingleton<IEmailService>(item =>
-           {
-               IConfigurationSection emailSettings = configRoot.GetSection("EmailSettings");
-               var settings = new EmailSettings
-               {
-                   Host = emailSettings["Host"],
-                   Port = int.Parse(emailSettings["Port"]),
-                   UserId = emailSettings["UserId"],
-                   Password = emailSettings["Password"]
-               };
-               return new EmailService(settings);
-           });
+
+            services.AddSingleton<ISerializer, JsonSerializer>();
+
+            services.AddSingleton<IEmailService>(item =>
+            {
+                IConfigurationSection emailSettings = configRoot.GetSection("EmailSettings");
+                var settings = new EmailSettings
+                {
+                    Host = emailSettings["Host"],
+                    Port = int.Parse(emailSettings["Port"]),
+                    UserId = emailSettings["UserId"],
+                    Password = emailSettings["Password"]
+                };
+                return new EmailService(settings);
+            });
+
+            services.AddHttpClient();
         }
     }
 }

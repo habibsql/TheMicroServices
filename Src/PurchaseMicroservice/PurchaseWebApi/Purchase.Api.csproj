@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject></StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonAll\Common.Infrastructure\Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\Purchase.QueryHandler\Purchase.QueryHandler.csproj" />
+    <ProjectReference Include="..\PurchaseCommandHandler\Purchase.CommandHandler.csproj" />
+    <ProjectReference Include="..\PurchaseCommand\Purchase.Command.csproj" />
+    <ProjectReference Include="..\PurchaseCore\Purchase.Core.csproj" />
+    <ProjectReference Include="..\PurchaseDomain\Purchase.Domain.csproj" />
+    <ProjectReference Include="..\PurchaseDto\Purchase.DTO.csproj" />
+    <ProjectReference Include="..\PurchaseQuery\Purchase.Query.csproj" />
+    <ProjectReference Include="..\PurchaseRepository\Purchase.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonAll\Common.Core\Common.Core.csproj" />
+    <ProjectReference Include="..\..\CommonAll\Common.Infrastructure\Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\InventoryDomain\Inventory.Domain.csproj" />
+    <ProjectReference Include="..\InventoryDto\Inventory.DTO.csproj" />
+    <ProjectReference Include="..\InventoryQuery\Inventory.Query.csproj" />
+    <ProjectReference Include="..\InventoryRepository\Inventory.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
