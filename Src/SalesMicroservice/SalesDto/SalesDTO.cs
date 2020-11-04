@@ -5,8 +5,6 @@
 
     public class SalesDTO
     {
-        public string SalesId { get; set; }
-
         public DateTime SalesDate { get; set; }
 
         public IList<SalesProductDTO> SalesProducts { get; set; }
@@ -25,8 +23,8 @@
 
         public string UnitName { get; set; }
 
-        public long SalesUnitPrice { get; set; }
+        public long UnitPrice { get; set; }
 
-        public long SalesQuantity { get; set; }
+        public long Quantity { get; set; }
     }
 }

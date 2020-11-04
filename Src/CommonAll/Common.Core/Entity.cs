@@ -1,11 +1,13 @@
 ﻿namespace Common.Core
 {
+    using MongoDB.Bson.Serialization.Attributes;
     using System;
     using System.Collections.Generic;
     using System.Text;
 
     public abstract class Entity 
     {
+        [BsonElement("_id")]
         public string Id { get; set; }
 
         public DateTime CreatedOn { get; set; }

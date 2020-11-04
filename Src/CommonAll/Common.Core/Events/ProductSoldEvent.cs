@@ -10,18 +10,18 @@
 
         public DateTime SalesDate { get; set; }
 
-        public IList<ProudctSoldLineItem> ProductSoldLineItems { get; set; }
+        public IList<ProductSoldLineItem> ProductSoldLineItems { get; set; }
 
         public ProductSoldEvent()
         {
-            ProductSoldLineItems = new List<ProudctSoldLineItem>();
+            ProductSoldLineItems = new List<ProductSoldLineItem>();
         }
     }
 
     /// <summary>
     /// Part of ProductSoldEvent
     /// </summary>
-    public class ProudctSoldLineItem
+    public class ProductSoldLineItem
     {
         public string ProductId { get; set; }
 

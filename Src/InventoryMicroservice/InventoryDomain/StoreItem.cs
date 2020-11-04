@@ -7,12 +7,8 @@
     {
         public string ItemName { get; set; }
 
-        public string UnitName { get; set; }
-
         public Store Store { get; set; }
 
-        public string PurchaseId { get; set; }
-
-        public int Quantity { get; set; }
+        public long BalanceQuantity { get; set; }
     }
 }

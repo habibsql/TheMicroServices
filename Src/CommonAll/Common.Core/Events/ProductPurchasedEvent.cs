@@ -23,13 +23,13 @@
 
         public string ProductName { get; set; }
 
-        public int PurchasedQuantity { get; set; }
+        public long PurchasedQuantity { get; set; }
 
         public string PurchasedUnitName { get; set; }
 
-        public int PurchasedUnitPrice { get; set; }
+        public long PurchasedUnitPrice { get; set; }
 
-        public int PurchaedTotalPrice
+        public long PurchaedTotalPrice
         {
             get
             {

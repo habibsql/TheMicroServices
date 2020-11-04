@@ -2,15 +2,15 @@
 {
     using Common.Core;
     using Inventory.Domain;
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
 
     public interface IStoreItemRepository : IRepository<StoreItem>
     {
-        public Task SaveItems(IEnumerable<StoreItem> entities);
+        Task SaveItems(IEnumerable<StoreItem> entities);
 
-        public Task RemoveItems(IEnumerable<string> ids);
+        Task<StoreItem> UpdateItem(StoreItem entity);
+
+        Task RemoveItem(string id);
     }
 }

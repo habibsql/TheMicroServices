@@ -8,10 +8,10 @@
 
         public string ProductName { get; set; }
 
-        public string UnitName { get; set; }
+        public string PurchaseUnitName { get; set; }
 
-        public int UnitPrice { get; set; }
+        public long PurchaseUnitPrice { get; set; }
 
-        public int PurchaseQuantity { get; set; }
+        public long PurchaseQuantity { get; set; }
     }
 }

@@ -27,6 +27,8 @@ namespace Purchase.Api
         {
             services.AddMvc();
             services.AddControllers();
+            services.AddHttpClient();
+
             RegisterServices(services);
         }
 
@@ -65,7 +67,6 @@ namespace Purchase.Api
         private void RegisterCommandHandlers(IServiceCollection services)
         {
             services.AddSingleton<ICommandHandler<PurchaseCommand, CommandResult>, PurchaseCommandHandler>();
-            //services.AddHttpClient<ICommandHandler<PurchaseCommand, CommandResult>, PurchaseCommandHandler>();
         }
 
         private void RegisterQueryHandlers(IServiceCollection services)
@@ -108,7 +109,14 @@ namespace Purchase.Api
                 return new EmailService(settings);
             });
 
-            services.AddHttpClient();
+            var rabbitMqSettings = new MessageBrokerSettings
+            {
+                Host = "127.0.0.1",
+                Port = 5672,
+                UserId = "guest",
+                Password = "guest"
+            };
+            services.AddSingleton(rabbitMqSettings);
         }
     }
 }

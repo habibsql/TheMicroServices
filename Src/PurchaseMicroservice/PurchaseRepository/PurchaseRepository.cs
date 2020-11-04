@@ -66,8 +66,8 @@
                     {
                         Date = purchase.PurchaseDate,
                         ProductName = productLineItem.Product.ProductName,
-                        PurchasedQuantity = productLineItem.Quantity,
-                        PurchasedAmount = productLineItem.TotalPrice
+                        PurchasedQuantity = productLineItem.PurchaseQuantity,
+                        PurchasedAmount = productLineItem.PurchaseTotalPrice
                     };
 
                     dtoList.Add(productPurchasedDTO);

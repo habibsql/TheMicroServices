@@ -10,14 +10,18 @@
     /// </summary>
     public class ProductLineItem : Entity
     {
-        //public string PurchaseId { get; set; }
+        public Product Product { get; set; }
 
-        public Product Product {get;set;}
+        public long PurchaseUnitPrice { get; set; }
 
-        public int Unitrice { get; set; }
+        public long PurchaseQuantity { get; set; }
 
-        public int Quantity { get; set; }
-
-        public int TotalPrice { get; private set; }
+        public long PurchaseTotalPrice
+        {
+            get
+            {
+                return PurchaseQuantity * PurchaseUnitPrice;
+            }
+        }
     }
 }

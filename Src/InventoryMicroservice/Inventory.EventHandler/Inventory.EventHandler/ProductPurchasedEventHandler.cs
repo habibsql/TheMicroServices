@@ -2,12 +2,9 @@
 {
     using Common.Core;
     using Common.Core.Events;
-    using Common.Infrastructure;
     using Inventory.Domain;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Inventory.Repository;
+    using System.Threading.Tasks;
 
     public class ProductPurchasedEventHandler : IEventHandler<ProductPurchasedEvent>
     {
@@ -22,31 +19,31 @@
 
         public async Task Handle(ProductPurchasedEvent @event)
         {
-            Store store = await storeRepository.GetById("S001");
-            IEnumerable<StoreItem> storeItems = Map(@event, store);
-
-            await storeItemRepository.SaveItems(storeItems);
-        }
-
-
-        private IEnumerable<StoreItem> Map(ProductPurchasedEvent @event, Store store)
-        {
-            var storeItems = new List<StoreItem>();
-
-            foreach (PurchasedLineItem lineItem in @event.LineItems)
+            foreach (PurchasedLineItem purchasedItem in @event.LineItems)
             {
-                var storeItem = new StoreItem
-                {
-                    Id = lineItem.ProductId,
-                    PurchaseId = @event.PurchaseId,
-                    ItemName = lineItem.ProductName,
-                    Store = store,
-                    Quantity = lineItem.PurchasedQuantity
-                };
-                storeItems.Add(storeItem);
-            }
+                StoreItem storeItem = await storeItemRepository.GetById(purchasedItem.ProductId);
 
-            return storeItems;
+                if (null == storeItem)
+                {
+                    Store store = await storeRepository.GetById("S001");
+
+                    var newStoreItem = new StoreItem
+                    {
+                        Id = purchasedItem.ProductId,
+                        ItemName = purchasedItem.ProductName,
+                        Store = store,
+                        BalanceQuantity = purchasedItem.PurchasedQuantity
+                    };
+
+                    await storeItemRepository.Save(newStoreItem);
+                }
+                else
+                {
+                    storeItem.BalanceQuantity += purchasedItem.PurchasedQuantity;
+
+                    await storeItemRepository.UpdateItem(storeItem);
+                }
+            }
         }
     }
 }

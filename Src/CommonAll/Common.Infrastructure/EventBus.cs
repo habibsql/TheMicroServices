@@ -1,7 +1,6 @@
 ﻿namespace Common.Infrastructure
 {
     using Common.Core;
-    using Common.Core.Events;
     using Microsoft.Extensions.DependencyInjection;
     using RabbitMQ.Client;
     using RabbitMQ.Client.Events;
@@ -15,15 +14,23 @@
     public class EventBus : IEventBus
     {
         private readonly IServiceProvider serviceProvider;
+        private readonly IConnection connection;
+        private readonly IModel channel;
+        private readonly EventingBasicConsumer consumer;
 
         public EventBus(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
+
+            ConnectionFactory connectionFactory = CreateRabbitMqConnectionFactory();
+            connection = connectionFactory.CreateConnection();
+            channel = connection.CreateModel();
+            consumer = new EventingBasicConsumer(channel);
         }
 
         public async Task Publish<T>(string queue, T @event) where T : IEvent
         {
-            var serializer = serviceProvider.GetService<ISerializer>();
+            var serializer = serviceProvider.GetRequiredService<ISerializer>();
             string json = await serializer.Serialize(@event);
             byte[] messageBytes = Encoding.UTF8.GetBytes(json);
 
@@ -32,35 +39,31 @@
 
         public async Task Subscribe<T>(string queue) where T : IEvent
         {
-            ConnectionFactory connectionFactory = CreateRabbitMqConnectionFactory();
-            using IConnection connection = connectionFactory.CreateConnection();
-            using IModel channel = connection.CreateModel();
-
             await SubscribeInner<T>(channel, queue);
         }
 
-        private Task PublishInner(string queueName, byte[] messageBytes)
+        private Task PublishInner(string queue, byte[] messageBytes)
         {
-            ConnectionFactory connectionFactory = CreateRabbitMqConnectionFactory();
-            using IConnection connection = connectionFactory.CreateConnection();
-            using IModel channel = connection.CreateModel();
-
-            string exchangeName = CreateExchangeName(queueName);
-            string modifiedQueueName = CreateQueueName(queueName);
+            string exchangeName = CreateExchangeName(queue);
+            string queueName = CreateQueueName(queue);
 
             channel.ExchangeDeclare(exchangeName, "fanout");
-            channel.QueueDeclare(modifiedQueueName, true, false, false, null);
-            channel.QueueBind(modifiedQueueName, exchangeName, modifiedQueueName);
+            channel.QueueDeclare(queueName, true, false, false, null);
+            channel.QueueBind(queueName, exchangeName, queueName);
 
-            channel.BasicPublish(exchangeName, modifiedQueueName, null, messageBytes);
+            channel.BasicPublish(exchangeName, queueName, null, messageBytes);
 
             return Task.CompletedTask;
         }
 
         private Task SubscribeInner<T>(IModel channel, string queue) where T:IEvent
         {
-            var consumer = new EventingBasicConsumer(channel);
             string queueName = CreateQueueName(queue);
+            string exchangeName = CreateExchangeName(queue);
+
+            channel.ExchangeDeclare(exchangeName, "fanout");
+            channel.QueueDeclare(queueName, true, false, false, null);
+            channel.QueueBind(queueName, exchangeName, queueName);
 
             consumer.Received += async (sender, e) =>
             {
@@ -110,6 +113,5 @@
         {
             return $"{queueName}-exchange";
         }
-
     }
 }

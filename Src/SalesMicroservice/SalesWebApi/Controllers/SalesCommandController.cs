@@ -21,7 +21,8 @@
             this.commandBus = commandBus;
         }
 
-        public Task<CommandResult> ProductSales(SalesDTO salesDTO)
+        [HttpPost("sales")]
+        public Task<CommandResult> ProductSales([FromBody] SalesDTO salesDTO)
         {
             var salesCommand = new SalesCommand
             {
@@ -35,8 +36,8 @@
                     ProductId = productDTO.ProductId,
                     ProductName = productDTO.ProductName,
                     UnitName = productDTO.UnitName,
-                    SalesUnitPrice = productDTO.SalesUnitPrice,
-                    SalesQuantity = productDTO.SalesQuantity
+                    SalesUnitPrice = productDTO.UnitPrice,
+                    SalesQuantity = productDTO.Quantity
                 };
                 salesCommand.SalesProducts.Add(product);
             }

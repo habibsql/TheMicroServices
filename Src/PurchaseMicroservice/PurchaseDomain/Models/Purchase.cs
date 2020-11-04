@@ -9,8 +9,6 @@
     /// </summary>
     public class Purchase : Aggregate
     {
-        public string PurchaaseId { get; set; }
-
         public DateTime PurchaseDate { get; set; }
 
        public User User { get; set; }

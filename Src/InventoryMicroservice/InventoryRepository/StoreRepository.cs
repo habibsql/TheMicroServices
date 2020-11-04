@@ -3,11 +3,8 @@
     using Common.Core;
     using Inventory.Domain;
     using MongoDB.Driver;
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
-    using System.Linq;
 
     public class StoreRepository : IStoreRepository
     {
@@ -33,7 +30,7 @@
 
            IAsyncCursor<Store> storeCursor = await  storeCollection.FindAsync(item => item.Id.Equals(id));
 
-            return await storeCursor.FirstOrDefaultAsync();
+            return await storeCursor.FirstOrDefaultAsync() ?? new Store { Id = id};
         }
 
         public async Task<Store> Save(Store entity)

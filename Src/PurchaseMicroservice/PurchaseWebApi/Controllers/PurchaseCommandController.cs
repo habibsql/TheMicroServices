@@ -29,14 +29,15 @@
             };
             command.LineItems = new List<LineItemCommand>();
 
-            foreach (var lineItemDTO in purchaseDTO.PurchaseItems ?? new List<PurchaseItemDTO>())
+            foreach (PurchaseItemDTO purchaseItemDTO in purchaseDTO.PurchaseItems ?? new List<PurchaseItemDTO>())
             {
                 command.LineItems.Add(new LineItemCommand
                 {
-                    ProductId = lineItemDTO.ProductId,
-                    ProductName = lineItemDTO.ProductName,
-                    PurchaseQuantity = lineItemDTO.Quantity,
-                    UnitName = lineItemDTO.UnitName
+                    ProductId = purchaseItemDTO.ProductId,
+                    ProductName = purchaseItemDTO.ProductName,
+                    PurchaseQuantity = purchaseItemDTO.Quantity,
+                    PurchaseUnitName = purchaseItemDTO.UnitName,
+                    PurchaseUnitPrice = purchaseItemDTO.UnitPrice
                 });
             }
 

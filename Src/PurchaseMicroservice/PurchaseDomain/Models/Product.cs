@@ -9,9 +9,5 @@
     public class Product : Aggregate
     {
         public string ProductName { get; set; }
-
-        public int UnitPrice { get; set; }
-
-        public string UnitName { get; set; }
     }
 }

@@ -82,7 +82,7 @@
             };
             foreach (SalesProduct product in command.SalesProducts)
             {
-                var proudctSoldLineItem = new ProudctSoldLineItem
+                var proudctSoldLineItem = new ProductSoldLineItem
                 {
                     ProductId = product.ProductId,
                     ProductName = product.ProductName,

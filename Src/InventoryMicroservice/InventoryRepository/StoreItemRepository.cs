@@ -25,14 +25,11 @@ namespace Inventory.Repository
             return await itemCursor.FirstOrDefaultAsync();
         }
 
-        public async Task RemoveItems(IEnumerable<string> ids)
+        public async Task RemoveItem(string id)
         {
             IMongoCollection<StoreItem> storeItemCollection = mongoService.GetCollection<StoreItem>();
 
-            foreach (string id in ids)
-            {
-                await storeItemCollection.DeleteOneAsync(item => item.Id.Equals(id));
-            }
+            await storeItemCollection.DeleteOneAsync(item => item.Id.Equals(id));
         }
 
         public async Task<StoreItem> Save(StoreItem entity)
@@ -46,10 +43,20 @@ namespace Inventory.Repository
 
         public async Task SaveItems(IEnumerable<StoreItem> entities)
         {
-            foreach(StoreItem item in entities)
+            foreach (StoreItem item in entities)
             {
                 await Save(item);
             }
+        }
+
+        public async Task<StoreItem> UpdateItem(StoreItem entity)
+        {
+            IMongoCollection<StoreItem> storeItemCollection = mongoService.GetCollection<StoreItem>();
+            FilterDefinition<StoreItem> criterial = Builders<StoreItem>.Filter.Eq(item => item.Id, entity.Id);
+
+            await storeItemCollection.ReplaceOneAsync(criterial, entity);
+
+            return entity;
         }
     }
 }

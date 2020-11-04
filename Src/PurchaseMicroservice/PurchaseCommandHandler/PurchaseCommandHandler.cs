@@ -35,7 +35,7 @@
             CommandResult commandResponse = ValidateCommand(purchaseCommand);
             if (!commandResponse.Succeed)
             {
-                // return commandResponse;
+                return commandResponse;
             }
             if (!await IsStoreServiceOn())
             {
@@ -51,7 +51,7 @@
             await serviceBus.Publish(Constants.MessageQueues.PurchasedQueue, productPurchasedEvent);
 
             EmailParams emailParams = BuildEmailParameters(productPurchasedEvent);
-            await emailService.SendEmail(emailParams);
+            //await emailService.SendEmail(emailParams);
 
             return new CommandResult();
         }
@@ -76,23 +76,24 @@
         {
             var purchase = new Purchase
             {
-                PurchaaseId = Guid.NewGuid().ToString(),
-                PurchaseDate = DateTime.UtcNow,
-                User = new User { Id = purchaseCommand.UserId, Name = purchaseCommand.UserName }
+                Id = purchaseCommand.PurchaseId,
+                PurchaseDate = DateTime.UtcNow
             };
 
             foreach (LineItemCommand lineItemCommand in purchaseCommand.LineItems)
             {
-                purchase.LineItems.Add(new ProductLineItem
+                var productLineItem = new ProductLineItem
                 {
                     Product = new Product
                     {
                         Id = lineItemCommand.ProductId,
-                        ProductName = lineItemCommand.ProductName,
-                        UnitPrice = lineItemCommand.UnitPrice,
-                        UnitName = lineItemCommand.UnitName
+                        ProductName = lineItemCommand.ProductName
                     }
-                });
+                };
+                productLineItem.PurchaseUnitPrice = lineItemCommand.PurchaseUnitPrice;
+                productLineItem.PurchaseQuantity = lineItemCommand.PurchaseQuantity;
+
+                purchase.LineItems.Add(productLineItem);
             }
 
             return purchase;
@@ -110,8 +111,8 @@
                 var lineItem = new PurchasedLineItem
                 {
                     ProductId = productLineItem.Product.Id,
-                    PurchasedUnitPrice = productLineItem.Unitrice,
-                    PurchasedQuantity = productLineItem.Quantity
+                    PurchasedUnitPrice = productLineItem.PurchaseUnitPrice,
+                    PurchasedQuantity = productLineItem.PurchaseQuantity
                 };
                 productPurchasedEvent.LineItems.Add(lineItem);
             }

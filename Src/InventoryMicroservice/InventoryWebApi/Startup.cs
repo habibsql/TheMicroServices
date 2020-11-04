@@ -15,10 +15,12 @@ namespace Inventory.Api
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using System.Threading.Tasks;
 
     public class Startup
     {
         private readonly IConfiguration configRoot;
+
         public Startup(IConfiguration configRoot)
         {
             this.configRoot = configRoot;
@@ -42,11 +44,6 @@ namespace Inventory.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-
                 endpoints.MapDefaultControllerRoute();
             });
         }
@@ -54,11 +51,11 @@ namespace Inventory.Api
         private void RegisterServices(IServiceCollection services)
         {
             RegisterHelperServices(services);
-            RegisterBuses(services);
             RegisterCommandHanders(services);
             RegisterQueryHandlers(services);
             RegisterEventHandlers(services);
             RegisterRepositories(services);
+            RegisterBuses(services).Wait();
         }
 
         private void RegisterHelperServices(IServiceCollection services)
@@ -71,14 +68,21 @@ namespace Inventory.Api
                 Password = "guest"
             };
             services.AddSingleton(rabbitMqSettings);
+            
             services.AddSingleton<IMongoService>(new MongoService(configRoot.GetConnectionString("Default")));
+
+            services.AddSingleton<ISerializer, JsonSerializer>();
         }
 
-        private void RegisterBuses(IServiceCollection services)
+        private async Task RegisterBuses(IServiceCollection services)
         {
             services.AddSingleton<ICommandBus, CommandBus>();
-            services.AddSingleton<IEventBus, EventBus>();
             services.AddSingleton<IQueryBus, QueryBus>();
+
+            var eventBus = new EventBus(services.BuildServiceProvider());
+            await eventBus.Subscribe<ProductPurchasedEvent>(Constants.MessageQueue.PurchaseQueue);
+            await eventBus.Subscribe<ProductSoldEvent>(Constants.MessageQueue.SalesQueue);
+            services.AddSingleton<IEventBus>(eventBus);
         }
 
         private void RegisterCommandHanders(IServiceCollection services)

@@ -7,9 +7,23 @@
     {
         public DateTime PurchaseDate { get; set; }
 
-        public int TotalPrice { get; set; }
+        public IList<PurchaseItemDTO> PurchaseItems { get; set; }
 
-        public IEnumerable<PurchaseItemDTO> PurchaseItems { get; set; }
+        public PurchaseDTO()
+        {
+            PurchaseItems = new List<PurchaseItemDTO>();
+        }
 
+        public long GetTotalPrice()
+        {
+            long total = 0;
+
+            foreach (PurchaseItemDTO dto in PurchaseItems)
+            {
+                total += dto.UnitPrice * dto.Quantity;
+            }
+
+            return total;
+        }
     }
 }
