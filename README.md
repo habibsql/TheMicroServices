@@ -28,10 +28,12 @@ party can update and act accordingly.
 
 4. Follow no share architecture. Means Every Microservice has its own database.
 
+
 Here, I have shouwn 3 ways to communicate Microservice to Microservice communication:
-  i) Event Driven: Any microservice Publish events to the Message Queue. Other Microservices subscribe those events and act accordingly.
-  ii) REST: Not recommended approach. But showing here as an example. One Microservice Directly call other Micrservice to the REST way.
-  iii) GRPC: Recommended approach for now a days. It is very similar like old Remote Procedure Call(RPC).  
+
+1. Event Driven: Any microservice Publish events to the Message Queue. Other Microservices subscribe those events and act accordingly.
+2. REST: Not recommended approach. But showing here as an example. One Microservice Directly call other Micrservice to the REST way.
+3. GRPC: Recommended approach for now a days. It is very similar like old Remote Procedure Call(RPC).  
 
 ![Overall Architecture](https://github.com/habibsql/TheMicroservices/blob/main/Docs/OverallArchitecture.JPG?raw=true)
 
