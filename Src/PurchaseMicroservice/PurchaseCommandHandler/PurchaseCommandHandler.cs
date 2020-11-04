@@ -2,6 +2,8 @@
 {
     using Common.Core;
     using Common.Core.Events;
+    using Grpc.Net.Client;
+    using Inventory.Api.Grpc;
     using Polly;
     using Polly.Retry;
     using Purchase.Command;
@@ -9,10 +11,12 @@
     using Purchase.Domain.Model;
     using Purchase.Repository;
     using System;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using static Inventory.Api.Grpc.InventoryServiceProvider;
 
     public class PurchaseCommandHandler : ICommandHandler<PurchaseCommand, CommandResult>
     {
@@ -37,9 +41,15 @@
             {
                 return commandResponse;
             }
-            if (!await IsStoreServiceOn())
+            if (!await IsStoreServiceOn()) // REST call with retry
             {
                 commandResponse.Error = "Sorry! Store Service is not On. You have to wait until it is open";
+
+                return commandResponse;
+            }
+            if (await GetCurrentStoreItems() > 1000L) // GRPC call
+            {
+                commandResponse.Error = "Sorry! Current storeitems more than 1000. So no more purchase possible";
 
                 return commandResponse;
             }
@@ -51,7 +61,7 @@
             await serviceBus.Publish(Constants.MessageQueues.PurchasedQueue, productPurchasedEvent);
 
             EmailParams emailParams = BuildEmailParameters(productPurchasedEvent);
-            //await emailService.SendEmail(emailParams);
+            await emailService.SendEmail(emailParams);
 
             return new CommandResult();
         }
@@ -162,6 +172,33 @@
             catch (HttpRequestException) { }
 
             return serviceOn;
+        }
+
+        /// <summary>
+        /// GRPC Call
+        /// </summary>
+        /// <returns></returns>
+        private async Task<long> GetCurrentStoreItems()
+        {
+            const string url = "https://localhost:70001";
+
+            using GrpcChannel channel = GrpcChannel.ForAddress(url);
+            var client = new InventoryServiceProviderClient(channel);
+            var request = new ServiceRequest { StoreId = "S001" };
+
+            long totalItems = long.MaxValue;
+            try
+            {
+                ServiceReplay replay = await client.CountTotalItemsAsync(request);
+
+                totalItems = long.Parse(replay.ItemCount);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return totalItems;
         }
     }
 }

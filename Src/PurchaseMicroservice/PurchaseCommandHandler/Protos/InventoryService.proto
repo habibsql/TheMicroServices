@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Inventory.Api.Grpc";
+
+package greet;
+
+service InventoryServiceProvider {
+  rpc CountTotalItems (ServiceRequest) returns (ServiceReplay);
+}
+
+message ServiceRequest {
+  string storeId = 1;
+}
+
+message ServiceReplay {
+  string itemCount = 1;
+}

@@ -3,6 +3,8 @@
     using Common.Core;
     using MailKit.Net.Smtp;
     using MimeKit;
+    using System;
+    using System.Diagnostics;
     using System.Threading.Tasks;
 
     public class EmailService : IEmailService
@@ -24,10 +26,18 @@
             mimeMessage.Body = new TextPart("plain") { Text = emailParams.Body };
 
             using var smtpClient = new SmtpClient();
-            smtpClient.Connect(settings.Host, settings.Port, settings.Ssl);
-            await smtpClient.AuthenticateAsync(settings.UserId, settings.Password);
 
-            await smtpClient.SendAsync(mimeMessage);
+            try
+            {
+                smtpClient.Connect(settings.Host, settings.Port, settings.Ssl);
+                await smtpClient.AuthenticateAsync(settings.UserId, settings.Password);
+
+                await smtpClient.SendAsync(mimeMessage);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }
