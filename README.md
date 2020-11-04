@@ -16,6 +16,8 @@ Borrowed 3 Boundned context from ERP.
 
 System is consist of 3 Microservices:
 
+0. CQRS (DDD) is implemented inside Microservices.
+
 1. Purchase Microservice: This microservice is responsible to manage Purchase related informtion and raised an event after purchase done. Based on the event,
 consumer will be updated accordingly.
 
