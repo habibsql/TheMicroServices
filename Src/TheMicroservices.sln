@@ -77,9 +77,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.QueryHandler", "I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sales.Repository.Tests", "SalesMicroservice\Sales.Repository.Tests\Sales.Repository.Tests.csproj", "{5D8E595F-6C68-47DE-9D1A-538AA6720A02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Api.Grpc", "InventoryMicroservice\Inventory.Api.Grpc\Inventory.Api.Grpc.csproj", "{E904AF5C-35A2-40F9-8EF2-0FDE5390D6F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Api.Grpc", "InventoryMicroservice\Inventory.Api.Grpc\Inventory.Api.Grpc.csproj", "{E904AF5C-35A2-40F9-8EF2-0FDE5390D6F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Api.Grpc.Tests", "InventoryMicroservice\Inventory.Api.Grpc.Tests\Inventory.Api.Grpc.Tests.csproj", "{F1BF0BC9-38BC-432B-AB28-4BF68A1A344C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Api.Grpc.Tests", "InventoryMicroservice\Inventory.Api.Grpc.Tests\Inventory.Api.Grpc.Tests.csproj", "{F1BF0BC9-38BC-432B-AB28-4BF68A1A344C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Api.Tests", "InventoryMicroservice\Inventory.Api.Tests\Inventory.Api.Tests.csproj", "{FB7E260A-C146-40C3-BF7C-641BEF92A7A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -227,6 +229,10 @@ Global
 		{F1BF0BC9-38BC-432B-AB28-4BF68A1A344C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1BF0BC9-38BC-432B-AB28-4BF68A1A344C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1BF0BC9-38BC-432B-AB28-4BF68A1A344C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB7E260A-C146-40C3-BF7C-641BEF92A7A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB7E260A-C146-40C3-BF7C-641BEF92A7A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB7E260A-C146-40C3-BF7C-641BEF92A7A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB7E260A-C146-40C3-BF7C-641BEF92A7A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -267,6 +273,7 @@ Global
 		{5D8E595F-6C68-47DE-9D1A-538AA6720A02} = {B5EA3087-36A6-4F1B-B57D-B4A0439552AF}
 		{E904AF5C-35A2-40F9-8EF2-0FDE5390D6F6} = {A520C293-BEE3-463F-A448-488C5EC15D24}
 		{F1BF0BC9-38BC-432B-AB28-4BF68A1A344C} = {A520C293-BEE3-463F-A448-488C5EC15D24}
+		{FB7E260A-C146-40C3-BF7C-641BEF92A7A0} = {A520C293-BEE3-463F-A448-488C5EC15D24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A562724F-A53A-4048-8F82-F40597B34CE3}
