@@ -35,7 +35,13 @@ Here, I have shouwn 3 ways to communicate Microservice to Microservice communica
 * **REST**: Not recommended approach. But showing here as an example. One Microservice Directly call other Micrservice to the REST way.
 * **GRPC**: Recommended approach for now a days. It is very similar like old Remote Procedure Call(RPC).  
 
-![Overall Architecture](https://github.com/habibsql/TheMicroservices/blob/main/Docs/OverallArchitecture.JPG?raw=true)
+#### High Level
+
+![High Level](https://github.com/habibsql/TheMicroservices/blob/main/Docs/highlevel.JPG?raw=true)
+
+#### Command/Query
+
+![CommandQuery](https://github.com/habibsql/TheMicroservices/blob/main/Docs/cq.JPG?raw=true)
 
 
 ## Technology
