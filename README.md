@@ -35,11 +35,16 @@ Here, I have shouwn 3 ways to communicate Microservice to Microservice communica
 * **REST**: Not recommended approach. But showing here as an example. One Microservice Directly call other Micrservice to the REST way.
 * **GRPC**: Recommended approach for now a days. It is very similar like old Remote Procedure Call(RPC).  
 
-#### High Level
+#### High Level:
 
 ![High Level](https://github.com/habibsql/TheMicroservices/blob/main/Docs/highlevel.JPG?raw=true)
 
-#### Command/Query
+#### Command/Query Segrigation:
+
+* In CQRS command and query are two distinct parts. Here Read Model and Write Model are different.
+* Command execution change the application state. So command execution flows are risky by nature and very carefully need to implement.
+* Query execution does not change anything just read the data. So little relux but if application contain sensitive data than
+it might be risky too. 
 
 ![CommandQuery](https://github.com/habibsql/TheMicroservices/blob/main/Docs/cq.JPG?raw=true)
 
