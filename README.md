@@ -61,9 +61,9 @@ it might be risky too.
 
 ## Demonastration
 
-* Event Driven
+* Synchronous Event Driven with Service Broker
 * CQRS
 * NOSQL
 * Service to Service communication with REST with Auto Retry
 * Service to Service communication with GRPC
-* Web API service Integration
+* Web API service Integration Test
