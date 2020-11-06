@@ -58,3 +58,12 @@ it might be risky too.
 * Rest/GRPC for communication
 * Polly: A Nuget package for setting Auto Retry Remote call settings.
 
+
+## Demonastration
+
+* Event Driven
+* CQRS
+* NOSQL
+* Service to Service communication with REST with Auto Retry
+* Service to Service communication with GRPC
+* Web API service Integration
