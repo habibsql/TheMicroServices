@@ -44,7 +44,7 @@ Here, I have shouwn 3 ways to communicate Microservice to Microservice communica
 * In CQRS command and query are two distinct parts. Here Read Model and Write Model are different.
 * Command execution change the application state. So command execution flows are risky by nature and very carefully need to implement.
 * Query execution does not change anything just read the data. So little relux but if application contain sensitive data than
-it might be risky too. 
+  it might be risky too. 
 
 ![CommandQuery](https://github.com/habibsql/TheMicroservices/blob/main/Docs/cq.JPG?raw=true)
 
@@ -60,13 +60,13 @@ it as Publisher subscriber Model.
 
 ## Technology Used
 
-* C#
-* ASP.NET Core
+* C# Language
+* ASP.NET Core Framework.
 * RabbitMQ: Message Broker for event pub/sub feature.
 * MongoDB: NoSQL database (Prefefer NoSQL instead of SQL for better schemaless/scalability/speed etc.
-* Rest/GRPC for communication
+* Rest/GRPC: Service-to-service communication.
 * Polly: A Nuget package for setting Auto Retry Remote call settings.
-
+* TestHost: (Microsoft.AspNetCore.TestHost) for WebAPI integration test.
 
 ## Demonastration
 
