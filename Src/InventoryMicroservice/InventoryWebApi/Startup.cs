@@ -18,11 +18,11 @@ namespace Inventory.Api
 
     public class Startup
     {
-        private readonly IConfiguration configRoot;
+        public IConfiguration Configuration { get; private set; }
 
         public Startup(IConfiguration configRoot)
         {
-            this.configRoot = configRoot;
+            this.Configuration = configRoot;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -67,9 +67,7 @@ namespace Inventory.Api
                 Password = "guest"
             };
             services.AddSingleton(rabbitMqSettings);
-            
-            services.AddSingleton<IMongoService>(new MongoService(configRoot.GetConnectionString("Default")));
-
+            services.AddSingleton<IMongoService>(new MongoService(Configuration.GetConnectionString("Default")));
             services.AddSingleton<ISerializer, JsonSerializer>();
         }
 
@@ -105,6 +103,5 @@ namespace Inventory.Api
             services.AddSingleton<IStoreRepository, StoreRepository>();
             services.AddSingleton<IStoreItemRepository, StoreItemRepository>();
         }
-
     }
 }

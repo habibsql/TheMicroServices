@@ -49,7 +49,16 @@ it might be risky too.
 ![CommandQuery](https://github.com/habibsql/TheMicroservices/blob/main/Docs/cq.JPG?raw=true)
 
 
-## Technology
+## Event Driven Architecture
+
+It is difference than traditional Request driven model. In event driven architecture one system emit events, other systems
+capture those events and react accordingly. The system communicate, processing based on event flows. Someone called
+it as Publisher subscriber Model.
+
+![Event-Driven](https://github.com/habibsql/TheMicroservices/blob/main/Docs/ed.JPG?raw=true)
+
+
+## Technology Used
 
 * C#
 * ASP.NET Core

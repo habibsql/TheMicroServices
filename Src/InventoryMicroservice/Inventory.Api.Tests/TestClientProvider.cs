@@ -19,8 +19,7 @@
             webHostBuilder.UseConfiguration(GetConfig());
             webHostBuilder.UseStartup<Startup>();
 
-            var testServer = new TestServer(webHostBuilder);
-            HttpClient = testServer.CreateClient();
+            HttpClient = new TestServer(webHostBuilder).CreateClient();
         }
 
         private IConfiguration GetConfig()

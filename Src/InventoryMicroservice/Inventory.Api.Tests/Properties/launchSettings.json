@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Inventory.Api.Tests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

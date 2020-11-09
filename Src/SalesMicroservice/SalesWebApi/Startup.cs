@@ -47,12 +47,16 @@ namespace SalesWebApi
 
         private void RegisterServices(IServiceCollection services)
         {
+            var fi = new System.IO.FileInfo(@$"{System.IO.Directory.GetCurrentDirectory()}\appsettings.json");
+            var ff = fi.OpenText().ReadToEnd();
+
             RegisterHelperServices(services);
             RegisterBuses(services);
             RegisterCommandHandlers(services);
             RegisterEventHandlers(services);
             RegisterQueryHandlers(services);
             RegisterRepositories(services);
+
         }
 
         private void RegisterHelperServices(IServiceCollection services)
