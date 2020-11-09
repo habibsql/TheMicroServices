@@ -3,7 +3,7 @@
 Demonastrate Event Driven Microservice based architecture.
 
 
-## Domain
+## Domain:
 
 Borrowed 3 Boundned context from ERP:
 
@@ -12,7 +12,7 @@ Borrowed 3 Boundned context from ERP:
 3. **Inventory**: When any purchase or Sales occured, Stock will be automatically updated.
 
 
-## Architecture
+## Architecture:
 
 System is consist of 3 Microservices:
 
@@ -35,7 +35,8 @@ Here, I have shouwn 3 ways to communicate Microservice to Microservice communica
 * **REST**: Not recommended approach. But showing here as an example. One Microservice Directly call other Micrservice to the REST way.
 * **GRPC**: Recommended approach for now a days. It is very similar like old Remote Procedure Call(RPC).  
 
-#### High Level:
+
+#### High Level Design:
 
 ![High Level](https://github.com/habibsql/TheMicroservices/blob/main/Docs/highlevel.JPG?raw=true)
 
@@ -49,7 +50,7 @@ Here, I have shouwn 3 ways to communicate Microservice to Microservice communica
 ![CommandQuery](https://github.com/habibsql/TheMicroservices/blob/main/Docs/cq.JPG?raw=true)
 
 
-## Event Driven Architecture
+## Event Driven Architecture:
 
 It is difference than traditional Request driven model. In event driven architecture one system emit events, other systems
 capture those events and react accordingly. The system communicate, processing based on event flows. Someone called
@@ -58,7 +59,7 @@ it as Publisher subscriber Model.
 ![Event-Driven](https://github.com/habibsql/TheMicroservices/blob/main/Docs/ed.JPG?raw=true)
 
 
-## Technology Used
+## Technology Used:
 
 * C# Language
 * ASP.NET Core Framework.
