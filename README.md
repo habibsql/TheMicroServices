@@ -58,6 +58,26 @@ it as Publisher subscriber Model.
 
 ![Event-Driven](https://github.com/habibsql/TheMicroservices/blob/main/Docs/ed.JPG?raw=true)
 
+## CAP theorem:
+
+It is also called brewer's theorem. It says whether any distributed system either achieve at most 2 out of 3 (It is actually proved).By cleaverly design so many systems in real world, if has achieved all 3 based on some tricks or you can say made balanced between them. It is business decission rather technical decission.
+
+#### 3 Parts are:
+* **C**onsistency: All clients must see the same data from all differnce places. 
+* **A**vailability: When any client requests for data, he/she can get data immediately, event 1 or 2 or mnore nodes are down. 
+* **P**artitioning: ommunication break within a distributed system.
+
+![CAP](https://github.com/habibsql/TheMicroservices/blob/main/Docs/cap.JPG?raw=true)
+
+## Eventual Consistency:
+
+It name described data is replicated other sources gradually. It is weekest consistency but many benifits, one of is easy scaling & best performace. For that reason many distributed system
+use this and sacrifice strong consistency. Its sequence is:
+  **1**. Write node-1 from client
+  **2**. Acknoledge to client from node-1
+  **3**. Eventual write propagates other nodes via cluster.
+ 
+![CAP](https://github.com/habibsql/TheMicroservices/blob/main/Docs/ec.JPG?raw=true)
 
 ## Circuit Breaker/Retry Policy
 
@@ -85,7 +105,7 @@ When failure happend at cirtain time interval, circuit breaker trips all futher 
 * Polly: A Nuget package for setting Auto Retry Remote call settings.
 * TestHost: (Microsoft.AspNetCore.TestHost) for WebAPI integration test.
 
-## Demonastration
+## Demonastration:
 
 * Synchronous Event Driven with Service Broker
 * CQRS
