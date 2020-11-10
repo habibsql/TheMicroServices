@@ -2,9 +2,11 @@
 {
     using Common.Core;
     using Common.Core.Events;
+    using Grpc.Core;
     using Grpc.Net.Client;
     using Inventory.Api.Grpc;
     using Polly;
+    using Polly.CircuitBreaker;
     using Polly.Retry;
     using Purchase.Command;
     using Purchase.Core;
@@ -13,7 +15,6 @@
     using System;
     using System.Diagnostics;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using static Inventory.Api.Grpc.InventoryServiceProvider;
@@ -24,6 +25,7 @@
         private readonly IEventBus serviceBus;
         private readonly IEmailService emailService;
         private IHttpClientFactory httpClientFactory;
+        private AsyncCircuitBreakerPolicy circuitAsyncBreakerPolicy;
 
         public PurchaseCommandHandler(IPurchaseRepostiory purchaseRepository, IEventBus serviceBus, IEmailService emailService,
             IHttpClientFactory httpClientFactory)
@@ -32,22 +34,26 @@
             this.serviceBus = serviceBus;
             this.emailService = emailService;
             this.httpClientFactory = httpClientFactory;
+
+            // Circuit breaker policy defined
+            circuitAsyncBreakerPolicy = Policy
+                .Handle<RpcException>().CircuitBreakerAsync(2, TimeSpan.FromSeconds(15));
         }
 
         public async Task<CommandResult> Handle(PurchaseCommand purchaseCommand)
         {
             CommandResult commandResponse = ValidateCommand(purchaseCommand);
-            if (!commandResponse.Succeed)
-            {
-                return commandResponse;
-            }
-            if (!await IsStoreServiceOn()) // REST call with retry
-            {
-                commandResponse.Error = "Sorry! Store Service is not On. You have to wait until it is open";
+            //if (!commandResponse.Succeed)
+            //{
+            //    return commandResponse;
+            //}
+            //if (!await IsStoreServiceOn()) // REST call with auto retry policy
+            //{
+            //    commandResponse.Error = "Sorry! Store Service is not On. You have to wait until it is open";
 
-                return commandResponse;
-            }
-            if (await GetCurrentStoreItems() > 1000L) // GRPC call
+            //    return commandResponse;
+            //}
+            if (await GetCurrentStoreItems() > 1000L) // GRPC call with Circuit breaker policy
             {
                 commandResponse.Error = "Sorry! Current storeitems more than 1000. So no more purchase possible";
 
@@ -158,10 +164,11 @@
             const string url = "http://localhost:4000/api/storequery/is-service-on";
             HttpClient httpClient = httpClientFactory.CreateClient();
 
+            // Retry Policy Defined
+            AsyncRetryPolicy retryPolicy 
+                = Policy.Handle<HttpRequestException>().WaitAndRetryAsync(3, item => TimeSpan.FromSeconds(2));
             try
-            {
-                AsyncRetryPolicy retryPolicy = Policy.Handle<HttpRequestException>().WaitAndRetryAsync(3, item => TimeSpan.FromSeconds(2));
-
+            { 
                 await retryPolicy.ExecuteAsync(async () =>
                 {
                     HttpResponseMessage response = await httpClient.GetAsync(url);
@@ -175,27 +182,29 @@
         }
 
         /// <summary>
-        /// GRPC Call
+        /// GRPC Call with Circuit breaker policy
         /// </summary>
         /// <returns></returns>
         private async Task<long> GetCurrentStoreItems()
         {
-            const string url = "https://localhost:70001";
-
+            const string url = "https://localhost:7001";
             using GrpcChannel channel = GrpcChannel.ForAddress(url);
             var client = new InventoryServiceProviderClient(channel);
             var request = new ServiceRequest { StoreId = "S001" };
+            long totalItems = 0L;
 
-            long totalItems = long.MaxValue;
             try
             {
-                ServiceReplay replay = await client.CountTotalItemsAsync(request);
-
-                totalItems = long.Parse(replay.ItemCount);
+                await circuitAsyncBreakerPolicy.ExecuteAsync(async () =>
+                {
+                    ServiceReplay replay = await client.CountTotalItemsAsync(request);
+                    totalItems = long.Parse(replay.ItemCount);
+                });
             }
-            catch(Exception ex)
+            catch(RpcException rEx)
             {
-                Debug.WriteLine(ex);
+                Debug.WriteLine($"Grpc Exception:{rEx.Message}");
+                await Task.Delay(1000);
             }
 
             return totalItems;

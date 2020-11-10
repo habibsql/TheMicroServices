@@ -59,6 +59,22 @@ it as Publisher subscriber Model.
 ![Event-Driven](https://github.com/habibsql/TheMicroservices/blob/main/Docs/ed.JPG?raw=true)
 
 
+## Circuit Breaker/Retry Policy
+
+Circuit breaker and retry policy are two important things in Microservice world. Here It assume that network is unreliable and may lost its 
+connection any time. It is a major issue here. So solve this issue and build a system resilece 2 patters play important role.
+
+* **Retry Policy**: Allow how many times (after time interval) a service call. 
+
+* **Circuit Breaker Policy**: Idea is very simple. We should wrap any function with Circuit breaker object and circuit breaker object monitor its failure.
+When failure happend at cirtain time interval, circuit breaker trips all futher call with a error message. It has 3 states: 
+
+* **i)Open**: Returns an error for calls without executing functions.
+* **ii)Closed**: Call all the services.
+* **iii)Half-Open**: After timeperiod, any issue raised then check underlying problem still exists or not. Any single call failed half CB changed to half open state.
+
+![Circuit-Breaker](https://github.com/habibsql/TheMicroservices/blob/main/Docs/cb.JPG?raw=true)
+
 ## Technology Used:
 
 * C# Language
@@ -74,6 +90,6 @@ it as Publisher subscriber Model.
 * Synchronous Event Driven with Service Broker
 * CQRS
 * NOSQL
-* Service to Service communication with REST with Auto Retry
-* Service to Service communication with GRPC
+* Service to Service communication with REST with Retry Policy
+* Service to Service communication with GRPC with Circuit Breaker Policy
 * Web API service Integration Test
